@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/john/projects/hak_engine/src/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
