@@ -5,9 +5,9 @@ project(HakEngine)
 find_package(glfw3 3.3 REQUIRED)
 find_package(OpenGL REQUIRED)
 
-add_executable(hak-engine main.cpp)
+add_executable(HakEngine src/main.cpp)
 
-target_link_libraries(hak-engine 
+target_link_libraries(HakEngine 
     PRIVATE 
         glfw 
         OpenGL::GL
