@@ -33,7 +33,8 @@ int main(void)
     } 
     ShaderLoader myLoader = ShaderLoader(PATH);
     std::cout << myLoader.LoadVertex();
-    unsigned glCreateShader(GL_VERTEX_SHADER);
+
+    unsigned int shaderID = glCreateShader(GL_VERTEX_SHADER);
 
     while (!glfwWindowShouldClose(window))	{
 
