@@ -27,3 +27,12 @@ string ShaderLoader::LoadVertex(){
     string vertex = stream.str();
     return vertex;
 }
+
+string ShaderLoader::LoadFragment(){
+    std::stringstream stream;
+    string path = paths["fragment"];
+    std::ifstream shaders(path);
+    stream << shaders.rdbuf();
+    string vertex = stream.str();
+    return vertex;
+}

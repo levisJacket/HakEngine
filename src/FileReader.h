@@ -8,4 +8,5 @@ private:
 public:
     ShaderLoader(std::string path);
     std::string LoadVertex();
+    std::string LoadFragment();
 };

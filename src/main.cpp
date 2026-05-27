@@ -27,19 +27,70 @@ int main(void)
     glfwMakeContextCurrent(window);
     glfwSetErrorCallback(error_callback);
     glfwSetKeyCallback(window, key_callback);
+
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))	{
 	std::cout << "Failed to initialize GLAD" << std::endl;
 	return -1;
-    } 
-    ShaderLoader myLoader = ShaderLoader(PATH);
-    std::cout << myLoader.LoadVertex();
+    }
 
-    unsigned int shaderID = glCreateShader(GL_VERTEX_SHADER);
+    ShaderLoader myLoader = ShaderLoader(PATH);
+
+    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    std::string vertexStr = myLoader.LoadVertex();
+    const char *vertexSrc = vertexStr.c_str();
+    glShaderSource(vertexShader, 1, &vertexSrc, NULL);
+    glCompileShader(vertexShader);
+
+    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    std::string fragmentStr = myLoader.LoadFragment();
+    const char *fragmentSrc = fragmentStr.c_str();
+    glShaderSource(fragmentShader, 1, &fragmentSrc, NULL);
+    glCompileShader(fragmentShader);
+
+    unsigned int shaderProgram;
+    shaderProgram = glCreateProgram();   
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);   
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    float vertices[] = {
+	0.5f,  0.0f, 0.0f,
+	0.5f, -0.5f, 0.0f,
+	-0.5f, -0.5f, 0.0f,
+	-0.5f,  0.5f, 0.0f   
+    };
+    unsigned int indices[] = {
+	0, 1, 3,
+	1, 2, 3
+    };
+    unsigned int VBO, VAO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+    glBindVertexArray(0); 
 
     while (!glfwWindowShouldClose(window))	{
 
-	static const GLfloat red[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	glClearBufferfv(GL_COLOR, 0, red);
+	//static const GLfloat red[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glUseProgram(shaderProgram);
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
