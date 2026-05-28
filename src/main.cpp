@@ -1,9 +1,9 @@
-#include "FileReader.h"
+#include "AssetLoader.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-static std::string PATH = "PATHS.json";
+static std::string PATH = "../PATHS.json";
 void error_callback(int error, const char* description);
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
@@ -33,27 +33,9 @@ int main(void)
 	return -1;
     }
 
-    ShaderLoader myLoader = ShaderLoader(PATH);
+    AssetLoader myLoader = AssetLoader(PATH);
+    Shader myShader = myLoader.LoadShader();
 
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    std::string vertexStr = myLoader.LoadVertex();
-    const char *vertexSrc = vertexStr.c_str();
-    glShaderSource(vertexShader, 1, &vertexSrc, NULL);
-    glCompileShader(vertexShader);
-
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    std::string fragmentStr = myLoader.LoadFragment();
-    const char *fragmentSrc = fragmentStr.c_str();
-    glShaderSource(fragmentShader, 1, &fragmentSrc, NULL);
-    glCompileShader(fragmentShader);
-
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();   
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);   
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
 
     float vertices[] = {
 	0.5f,  0.0f, 0.0f,
@@ -85,10 +67,15 @@ int main(void)
 
     while (!glfwWindowShouldClose(window))	{
 
-	//static const GLfloat red[] = { 1.0f, 0.0f, 0.0f, 1.0f };
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glUseProgram(shaderProgram);
+	myShader.use();
+
+	float timeValue = glfwGetTime();
+	float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+	//int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+	myShader.setVec4("ourColor",0.0f, greenValue, 0.0f, 1.0f);
+
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

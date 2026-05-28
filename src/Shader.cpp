@@ -1,0 +1,58 @@
+#include "Shader.h"
+
+Shader::Shader(const char* vertexSource, const char* fragmentSource){
+    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(vertexShader, 1, &vertexSource, NULL);
+    glCompileShader(vertexShader);
+    glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+    glCompileShader(fragmentShader);
+    
+    ID = glCreateProgram();
+    glAttachShader(ID, vertexShader);
+    glAttachShader(ID, fragmentShader);
+    glLinkProgram(ID);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+};
+    
+void Shader::use(){
+    glUseProgram(ID);
+};
+
+void Shader::setBool(const std::string &name, bool value) const {
+    glUniform1i(getUniformLocation(name), (int)value);
+};
+
+void Shader::setInt(const std::string &name, int value) const {
+    glUniform1i(getUniformLocation(name), value);
+}; 
+void Shader::setFloat(const std::string &name, float value) const {
+    glUniform1f(getUniformLocation(name), value);
+};
+
+void Shader::setVec2(const std::string &name, float x, float y) const {
+     glUniform2f(getUniformLocation(name), x, y);
+}
+
+void Shader::setVec3(const std::string &name, float x, float y, float z) const {
+     glUniform3f(getUniformLocation(name), x, y, z);
+}
+
+void Shader::setVec4(const std::string &name, float x, float y, float z, float w) const {
+     glUniform4f(getUniformLocation(name), x, y, z, w);
+}
+
+int Shader::getUniformLocation(const std::string &name) const{
+    if (uniformLocationCache.find(name) != uniformLocationCache.end()) {
+	return uniformLocationCache[name];
+    }
+
+    int location = glGetUniformLocation(ID, name.c_str());
+    if (location == -1) {
+	std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
+    }
+    
+    uniformLocationCache[name] = location;
+    return location;
+};
