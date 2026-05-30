@@ -38,18 +38,6 @@ int main(void)
 
     AssetLoader myLoader = AssetLoader(PATH);
     Shader myShader = myLoader.LoadShader();
-
-    std::vector<float> vertices = {
-	0.5f,  0.0f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-	-0.5f, -0.5f, 0.0f,
-	-0.5f,  0.5f, 0.0f   
-    };
-    std::vector<unsigned int> indices = {
-	0, 1, 3,
-	1, 2, 3
-    };
-
     
     Mesh myMesh = myLoader.LoadMesh("pyramid");
     unsigned int VAO = myMesh.getVAO();
