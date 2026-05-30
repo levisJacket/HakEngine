@@ -1,4 +1,4 @@
-#include "Shader.h"
+#include "Shader.hpp"
 
 Shader::Shader(const char* vertexSource, const char* fragmentSource){
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);

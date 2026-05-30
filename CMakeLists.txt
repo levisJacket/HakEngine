@@ -5,8 +5,21 @@ find_package(glfw3 3.3 REQUIRED)
 find_package(OpenGL REQUIRED)
 #find_package(GLAD REQUIRED)
 
+set(PROJECT_SOURCES
+    src/main.cpp
+    src/glad.c
 
-add_executable(HakEngine src/main.cpp src/glad.c src/AssetLoader.cpp src/AssetLoader.h src/Shader.cpp src/Shader.h)
+    src/AssetLoader.cpp
+    src/AssetLoader.hpp
+
+    src/Shader.cpp
+    src/Shader.hpp
+
+    src/Mesh.cpp  
+    src/Mesh.hpp
+)
+
+add_executable(HakEngine ${PROJECT_SOURCES})
 
 target_link_libraries(HakEngine 
     PRIVATE

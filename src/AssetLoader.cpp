@@ -1,10 +1,12 @@
-#include "AssetLoader.h"
-#include "Shader.h"
+#include "AssetLoader.hpp"
+#include "Shader.hpp"
+#include "Mesh.hpp"
 
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <string>
+#include <vector>
 #include <nlohmann/json.hpp>
 
 using std::string;
@@ -19,7 +21,6 @@ AssetLoader::AssetLoader(string path){
     paths = json::parse(file);
     file.close();
 }
-
 
 Shader AssetLoader::LoadShader(){
     std::stringstream vertStream;
@@ -36,4 +37,31 @@ Shader AssetLoader::LoadShader(){
     const char *fragmentSrc = fragmentStr.c_str();
 
     return Shader(vertexSrc,fragmentSrc);
+}
+
+Mesh AssetLoader::LoadMesh(std::string name){
+
+    std::vector<float> vertices;
+    std::vector<unsigned int> indices;
+
+    std::string fileName = paths["mesh"][name];
+    std::ifstream File(fileName);
+    std::stringstream Stream;
+    Stream << File.rdbuf();
+
+    std::string line;
+    int index = 0;
+    while (std::getline(Stream,line)) {
+	std::stringstream ss(line);
+	std::string word;	ss >> word;
+	if (word == "vertex"){
+	    float val;
+	    ss >> val;	vertices.push_back(val);
+	    ss >> val;	vertices.push_back(val);
+	    ss >> val;	vertices.push_back(val);
+	    indices.push_back(index++);
+	}
+    }
+
+    return Mesh(vertices, indices);
 }

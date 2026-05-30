@@ -1,0 +1,16 @@
+solid pyramid
+facet normal ni nj nk
+    outer loop
+        vertex 0.5 0.5 0.0
+        vertex 0.5 -0.5 0.0
+        vertex -0.5 0.5 0.0
+    endloop
+endfacet
+facet normal ni nj nk
+    outer loop
+        vertex -0.5 0.5 0.0
+        vertex 0.5 -0.5 0.0
+        vertex -0.5 -0.5 0.0
+    endloop
+endfacet
+endsolid pyramid

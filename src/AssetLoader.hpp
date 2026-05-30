@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Shader.h"
+#include "Shader.hpp"
+#include "Mesh.hpp"
 #include <string>
 #include <nlohmann/json.hpp>
+#include <glm/vec3.hpp>
 
 class AssetLoader {
 private:
@@ -10,4 +12,5 @@ private:
 public:
     AssetLoader(std::string path);
     Shader LoadShader();
+    Mesh LoadMesh(std::string name);
 };
