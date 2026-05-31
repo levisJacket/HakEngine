@@ -17,6 +17,9 @@ set(PROJECT_SOURCES
 
     src/Mesh.cpp  
     src/Mesh.hpp
+
+    src/Entity.cpp
+    src/Entity.hpp
 )
 
 add_executable(HakEngine ${PROJECT_SOURCES})

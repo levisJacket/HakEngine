@@ -1,4 +1,6 @@
 #include "Shader.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader(const char* vertexSource, const char* fragmentSource){
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -41,6 +43,11 @@ void Shader::setVec3(const std::string &name, float x, float y, float z) const {
 
 void Shader::setVec4(const std::string &name, float x, float y, float z, float w) const {
      glUniform4f(getUniformLocation(name), x, y, z, w);
+}
+
+void Shader::setMat4(const std::string &name, glm::mat4 mat) const {
+    const float* floatPtr = glm::value_ptr(mat);
+    glUniformMatrix4fv(getUniformLocation(name), 1, 0, floatPtr);
 }
 
 int Shader::getUniformLocation(const std::string &name) const{
