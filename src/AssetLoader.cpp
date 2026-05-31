@@ -42,7 +42,6 @@ Shader AssetLoader::LoadShader(){
 Mesh AssetLoader::LoadMesh(std::string name){
 
     std::vector<float> vertices;
-    std::vector<float> vertices;
     std::vector<unsigned int> indices;
 
     std::string fileName = paths["mesh"][name];
