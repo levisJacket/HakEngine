@@ -2,6 +2,6 @@
     "vertex":"../shaders/basic.vert",
     "fragment":"../shaders/basic.frag",
     "mesh":{
-	"pyramid":"../assets/pyramid.stl"
+	"cube":"../assets/cube.stl"
     }
 }

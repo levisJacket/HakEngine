@@ -1,7 +1,7 @@
 #include "Entity.hpp"
 
 Entity::Entity(Mesh *mesh){
-    location = glm::vec3(0.0f, 0.0f, 10.0f);
+    location = glm::vec3(0.0f, 0.0f, 12.0f);
     rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
     this->mesh = mesh;
 }

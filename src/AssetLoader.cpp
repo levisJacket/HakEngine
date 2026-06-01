@@ -40,7 +40,6 @@ Shader AssetLoader::LoadShader(){
 }
 
 Mesh AssetLoader::LoadMesh(std::string name){
-
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
 
@@ -51,20 +50,24 @@ Mesh AssetLoader::LoadMesh(std::string name){
 
     std::string line;
     int index = 0;
+    float x, y, z;
     while (std::getline(Stream,line)) {
 	std::stringstream ss(line);
 	std::string word;	ss >> word;
+	if (word == "facet"){
+	    ss >> word;
+	    ss >> x;	ss >> y;	ss >> z;
+	    continue;
+	}
 	if (word == "vertex"){
 	    float val;
 	    ss >> val;	vertices.push_back(val);
 	    ss >> val;	vertices.push_back(val);
 	    ss >> val;	vertices.push_back(val);
+	    vertices.push_back(x);
+	    vertices.push_back(y);
+	    vertices.push_back(z);
 	    indices.push_back(index++);
-	    continue;
-	}
-	ss >> word;
-	if (word == "normal"){
-
 	}
     }
 
