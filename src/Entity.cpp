@@ -6,11 +6,11 @@ Entity::Entity(Mesh *mesh){
     this->mesh = mesh;
 }
 
-unsigned int Entity::getVAO(){
+unsigned int Entity::MeshVAO(){
     return mesh->getVAO();
 }
 
-glm::mat4 Entity::GetMat(){
+glm::mat4 Entity::ModelMatrix(){
     glm::mat4 matRotation = glm::mat4_cast(rotation);
     glm::mat4 matLocation = {
 	1.0, 0.0, 0.0, location.x,

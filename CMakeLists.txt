@@ -9,17 +9,15 @@ set(PROJECT_SOURCES
     src/main.cpp
     src/glad.c
 
-    src/AssetLoader.cpp
-    src/AssetLoader.hpp
+    src/AssetLoader.cpp src/AssetLoader.hpp
 
-    src/Shader.cpp
-    src/Shader.hpp
+    src/Shader.cpp 	src/Shader.hpp
 
-    src/Mesh.cpp  
-    src/Mesh.hpp
+    src/Mesh.cpp  src/Mesh.hpp
 
-    src/Entity.cpp
-    src/Entity.hpp
+    src/Entity.cpp 	src/Entity.hpp
+
+    src/Camera.cpp 	src/Camera.hpp
 )
 
 add_executable(HakEngine ${PROJECT_SOURCES})

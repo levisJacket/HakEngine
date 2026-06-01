@@ -1,6 +1,7 @@
 #include "AssetLoader.hpp"
-#include "Mesh.hpp"
 #include "Entity.hpp"
+#include "Camera.hpp"
+#include "Mesh.hpp"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -11,9 +12,6 @@ static std::string PATH = "../PATHS.json";
 void error_callback(int error, const char* description);
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-float rotx = 0.0f;
-float roty = 0.0f;
-float rotz = 0.0f;
 
 int main(void)
 {
@@ -46,6 +44,12 @@ int main(void)
     
     Mesh myMesh = myLoader.LoadMesh("cube");
     Entity myEntity = Entity(&myMesh);
+    
+    glm::quat camRotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+    glm::vec3 camLocation = glm::vec3(0.0f, 0.0f, 0.0f);
+    Camera myCamera = Camera(0.75f);
+    myCamera.setLocation(&camLocation);
+    myCamera.setRotation(&camRotation);
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
@@ -58,13 +62,12 @@ int main(void)
 	myShader.use();
 
 	float timeValue = glfwGetTime();
-	float VAR = (timeValue) * 1.0f + 1.0f;
-	myEntity.SetRot(0,0,timeValue);
+	float VAR = (timeValue) * 1.0f + 1.0f;;
 
-	//myEntity.SetRot(rotx, roty, rotz);
-	myShader.setMat4("matMove",myEntity.GetMat());
 
-	VAO = myEntity.getVAO();
+	myShader.setMat4("modelViewMatrix",myEntity.ModelMatrix() * myCamera.ViewMatrix());
+
+	VAO = myEntity.MeshVAO();
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
@@ -84,19 +87,4 @@ void error_callback(int error, const char* description)	{
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)	{
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
-    if (key == GLFW_KEY_1 && action == GLFW_PRESS)
-	rotx = rotx + 0.1f;
-    if (key == GLFW_KEY_3 && action == GLFW_PRESS)
-	roty = roty + 0.1f;
-    if (key == GLFW_KEY_5 && action == GLFW_PRESS)
-	rotz = rotz + 0.1f;
-    if (key == GLFW_KEY_2 && action == GLFW_PRESS)
-	rotx = rotx - 0.1f;
-    if (key == GLFW_KEY_4 && action == GLFW_PRESS)
-	roty = roty - 0.1f;
-    if (key == GLFW_KEY_6 && action == GLFW_PRESS)
-	rotz = rotz - 0.1f;
-    if (key == GLFW_KEY_7 && action == GLFW_PRESS){
-	rotx = 0; roty = 0; rotz = 0;
-    }
 }

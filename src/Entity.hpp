@@ -11,7 +11,7 @@ class Entity{
 	glm::mat4 matLocal;
     public:
 	Entity(Mesh *mesh);
-	glm::mat4 GetMat();
-	unsigned int getVAO();
+	glm::mat4 ModelMatrix();
+	unsigned int MeshVAO();
 	void SetRot(float rotX, float rotY, float rotZ);
 };
