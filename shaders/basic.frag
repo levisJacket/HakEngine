@@ -1,13 +1,19 @@
 #version 330 core
 
-in vec3 normalFrag;
-in mat4 moveNorm;
+in vec4 worldPosition;
+in vec4 worldNormal;
+
+uniform vec3 lightLocation; 
 
 out vec4 FragColor;
 
 void main()
 {
-    vec4 normal = vec4(normalFrag, 0) * moveNorm;
-    float a = dot(vec3(normal.x, normal.y, normal.z ), vec3(0.0, 0.0, -1.0));
-    FragColor = vec4(0, 0, a, 1.0);
+
+    vec3 faceToLight = normalize(vec3(worldPosition) - lightLocation);
+    //vec3 faceToLight = normalize(lightLocation - vec3(worldPosition));
+    vec3 faceNormal = normalize(vec3(worldNormal));
+    float a = dot(faceNormal, faceToLight);
+
+    FragColor = vec4(a, a, a, 1.0);
 }

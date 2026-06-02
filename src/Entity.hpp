@@ -13,5 +13,7 @@ class Entity{
 	Entity(Mesh *mesh);
 	glm::mat4 ModelMatrix();
 	unsigned int MeshVAO();
-	void SetRot(float rotX, float rotY, float rotZ);
+	void SetRotation(float rotX, float rotY, float rotZ);
+	void SetLocation(float x, float y, float z);
+
 };

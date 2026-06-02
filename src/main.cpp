@@ -44,7 +44,9 @@ int main(void)
     
     Mesh myMesh = myLoader.LoadMesh("cube");
     Entity myEntity = Entity(&myMesh);
-    
+    myEntity.SetRotation(0.0f, 0.0f, 0.0f);
+    myEntity.SetLocation(-7.0f, -7.0f, 10.0f);
+
     glm::quat camRotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
     glm::vec3 camLocation = glm::vec3(0.0f, 0.0f, 0.0f);
     Camera myCamera = Camera(0.75f);
@@ -56,16 +58,18 @@ int main(void)
     glFrontFace(GL_CW);
 
     unsigned int VAO;
+
     while (!glfwWindowShouldClose(window))	{
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	myShader.use();
 
 	float timeValue = glfwGetTime();
-	float VAR = (timeValue) * 1.0f + 1.0f;;
+	float VAR = sin(timeValue) * 10.0 + 12.5f;
 
-
-	myShader.setMat4("modelViewMatrix",myEntity.ModelMatrix() * myCamera.ViewMatrix());
+	myShader.setMat4("modelMatrix", myEntity.ModelMatrix());
+	myShader.setMat4("viewProjectionMatrix", myCamera.ViewMatrix() * myCamera.ProjectionMatrix());
+	myShader.setVec3("lightLocation", 3.0f, 3.0f, VAR);
 
 	VAO = myEntity.MeshVAO();
 

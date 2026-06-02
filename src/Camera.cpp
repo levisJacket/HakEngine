@@ -7,7 +7,7 @@ Camera::Camera(float screenRatio){
     far = 1000.0f;
     projMatrix = glm::mat4(
 	glm::vec4(screenRatio * fov, 0.0f, 0.0f, 0.0f),
-	glm::vec4(0.0f, 1.0f, 0.0f, 0.0f),
+	glm::vec4(0.0f, fov, 0.0f, 0.0f),
 	glm::vec4(0.0f, 0.0f, far/(far-near), -near*far/(far-near)),
 	glm::vec4(0.0f, 0.0f, 1.0f, 0.0f)
     );
@@ -24,7 +24,11 @@ glm::mat4 Camera::ViewMatrix(){
 	0.0, 0.0, 0.0, 1.0
     };
     glm::mat4 matRotation = glm::mat4_cast(invRotation);
-    return matLocation * matRotation * projMatrix;
+    return matLocation * matRotation;
+}
+
+glm::mat4 Camera::ProjectionMatrix(){
+    return projMatrix;
 }
 
 void Camera::setLocation(glm::vec3 *location){

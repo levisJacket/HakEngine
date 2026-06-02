@@ -15,4 +15,5 @@ class Camera{
 	void setLocation(glm::vec3 *location);
 	void setRotation(glm::quat *rotation);
 	glm::mat4 ViewMatrix();
+	glm::mat4 ProjectionMatrix();
 };

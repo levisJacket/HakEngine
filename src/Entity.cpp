@@ -1,7 +1,7 @@
 #include "Entity.hpp"
 
 Entity::Entity(Mesh *mesh){
-    location = glm::vec3(0.0f, 0.0f, 12.0f);
+    location = glm::vec3(0.0f, 0.0f, 0.0f);
     rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
     this->mesh = mesh;
 }
@@ -21,9 +21,13 @@ glm::mat4 Entity::ModelMatrix(){
     return matRotation * matLocation;
 }
 
-void Entity::SetRot(float rotX, float rotY, float rotZ){
+void Entity::SetRotation(float rotX, float rotY, float rotZ){
     glm::quat xRotation = glm::angleAxis(rotX, glm::vec3(1, 0, 0));
     glm::quat yRotation = glm::angleAxis(rotY, glm::vec3(0, 1, 0));
     glm::quat zRotation = glm::angleAxis(rotZ, glm::vec3(0, 0, 1));
     rotation = xRotation * yRotation * zRotation;
+}
+
+void Entity::SetLocation(float x, float y, float z){
+    location = glm::vec3(x, y, z);
 }
