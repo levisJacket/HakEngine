@@ -6,9 +6,11 @@
 class Mesh {
     private:
 	unsigned int VBO, VAO, EBO;
+	int vertexCount;
     public:
 	Mesh(std::vector<float> vertices, std::vector<unsigned int> indices);
-	unsigned int getVBO() const;
-	unsigned int getVAO() const;
-	unsigned int getEBO() const;
+	unsigned int GetVBO() const;
+	unsigned int GetVAO() const;
+	unsigned int GetEBO() const;
+	int GetVertexCount();
 };

@@ -42,40 +42,45 @@ int main(void)
     AssetLoader myLoader = AssetLoader(PATH);
     Shader myShader = myLoader.LoadShader();
     
-    Mesh myMesh = myLoader.LoadMesh("cube");
-    Entity myEntity = Entity(&myMesh);
-    myEntity.SetRotation(0.0f, 0.0f, 0.0f);
-    myEntity.SetLocation(-7.0f, -7.0f, 10.0f);
+    std::vector<Entity> entityList;
+    
+    Mesh cubeMesh = myLoader.LoadMesh("miku");
+
+    entityList.push_back( Entity(&cubeMesh) );
+    entityList[0].getTransform()->SetLocation(0.0f, -4.0f, 10.0f);
+
 
     glm::quat camRotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
     glm::vec3 camLocation = glm::vec3(0.0f, 0.0f, 0.0f);
     Camera myCamera = Camera(0.75f);
-    myCamera.setLocation(&camLocation);
-    myCamera.setRotation(&camRotation);
+    myCamera.SetLocation(&camLocation);
+    myCamera.SetRotation(&camRotation);
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CW);
 
     unsigned int VAO;
+    myShader.use();
 
     while (!glfwWindowShouldClose(window))	{
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	myShader.use();
-
 	float timeValue = glfwGetTime();
-	float VAR = sin(timeValue) * 10.0 + 12.5f;
 
-	myShader.setMat4("modelMatrix", myEntity.ModelMatrix());
-	myShader.setMat4("viewProjectionMatrix", myCamera.ViewMatrix() * myCamera.ProjectionMatrix());
-	myShader.setVec3("lightLocation", 3.0f, 3.0f, VAR);
+	myShader.setMat4("u_ViewProjectionMatrix", myCamera.ViewMatrix() * myCamera.ProjectionMatrix());
 
-	VAO = myEntity.MeshVAO();
+	myShader.setVec3("u_Lights[0].position", -5.0f, 0.0f, 0.0f);
+	myShader.setVec3("u_Lights[0].color", 0.2f, 0.0f, 0.0f);
+	myShader.setVec3("u_Lights[1].position", 5.0f, 0.0f, 0.0f);
+	myShader.setVec3("u_Lights[1].color", 0.0f, 1.0f, 1.0f);
 
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-
+	entityList[0].getTransform()->SetRotation(1.5f, timeValue, 0.0f);
+	for(int i = 0; i < entityList.size(); i++){
+	    myShader.setMat4("u_ModelMatrix", entityList[i].ModelMatrix());
+	    VAO = entityList[i].MeshVAO();
+	    glBindVertexArray(VAO);
+	    glDrawElements(GL_TRIANGLES, entityList[i].vertexCount(), GL_UNSIGNED_INT, 0);
+	}
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

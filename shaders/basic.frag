@@ -3,17 +3,26 @@
 in vec4 worldPosition;
 in vec4 worldNormal;
 
-uniform vec3 lightLocation; 
+struct PointLight{
+    vec3 position;
+    vec3 color;
+};
+
+const int MAX_LIGHT = 4;
+uniform PointLight u_Lights[MAX_LIGHT];
 
 out vec4 FragColor;
 
 void main()
 {
+    vec3 color = vec3(0.0, 0.0, 0.0);
 
-    vec3 faceToLight = normalize(vec3(worldPosition) - lightLocation);
-    //vec3 faceToLight = normalize(lightLocation - vec3(worldPosition));
     vec3 faceNormal = normalize(vec3(worldNormal));
-    float a = dot(faceNormal, faceToLight);
+    for(int i = 0;i < MAX_LIGHT ;i++){
+	vec3 faceToLight = normalize(u_Lights[i].position - vec3(worldPosition));
+	float a = dot(faceNormal, faceToLight);
+	color = color + u_Lights[i].color * a;
+    }
 
-    FragColor = vec4(a, a, a, 1.0);
+    FragColor = vec4(color, 1.0);
 }

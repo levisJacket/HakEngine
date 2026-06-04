@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 
 Mesh::Mesh(std::vector<float> vertices, std::vector<unsigned int> indices){
+    vertexCount = vertices.size();
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
@@ -25,14 +26,18 @@ Mesh::Mesh(std::vector<float> vertices, std::vector<unsigned int> indices){
     glBindVertexArray(0); 
 }
 
-unsigned int Mesh::getVBO() const {
+unsigned int Mesh::GetVBO() const {
     return VBO;
 }
 
-unsigned int Mesh::getVAO() const {
+unsigned int Mesh::GetVAO() const {
     return VAO;
 }
 
-unsigned int Mesh::getEBO() const {
+unsigned int Mesh::GetEBO() const {
     return EBO;
+}
+
+int Mesh::GetVertexCount(){
+    return vertexCount;
 }

@@ -31,10 +31,10 @@ glm::mat4 Camera::ProjectionMatrix(){
     return projMatrix;
 }
 
-void Camera::setLocation(glm::vec3 *location){
+void Camera::SetLocation(glm::vec3 *location){
     this->location = location;
 }
     
-void Camera::setRotation(glm::quat *rotation){
+void Camera::SetRotation(glm::quat *rotation){
     this->rotation = rotation;
 }

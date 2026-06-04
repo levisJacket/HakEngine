@@ -3,6 +3,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader(const char* vertexSource, const char* fragmentSource){
+    int success;
+    char infoLog[512];
+
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(vertexShader, 1, &vertexSource, NULL);
@@ -14,6 +17,13 @@ Shader::Shader(const char* vertexSource, const char* fragmentSource){
     glAttachShader(ID, vertexShader);
     glAttachShader(ID, fragmentShader);
     glLinkProgram(ID);
+
+    glGetProgramiv(ID, GL_LINK_STATUS, &success);
+    if(!success)
+    {
+	glGetProgramInfoLog(ID, 512, NULL, infoLog);
+	std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+    }
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 };

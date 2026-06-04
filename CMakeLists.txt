@@ -13,9 +13,11 @@ set(PROJECT_SOURCES
 
     src/Shader.cpp 	src/Shader.hpp
 
-    src/Mesh.cpp  src/Mesh.hpp
-
     src/Entity.cpp 	src/Entity.hpp
+
+    src/Transform.cpp 	src/Transform.hpp
+
+    src/Mesh.cpp  src/Mesh.hpp
 
     src/Camera.cpp 	src/Camera.hpp
 )

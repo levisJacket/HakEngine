@@ -12,8 +12,8 @@ class Camera{
 	float near, far;
     public:
 	Camera(float screenRatio);
-	void setLocation(glm::vec3 *location);
-	void setRotation(glm::quat *rotation);
+	void SetLocation(glm::vec3 *location);
+	void SetRotation(glm::quat *rotation);
 	glm::mat4 ViewMatrix();
 	glm::mat4 ProjectionMatrix();
 };
