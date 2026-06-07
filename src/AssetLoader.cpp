@@ -43,7 +43,8 @@ Mesh AssetLoader::LoadMesh(std::string name){
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
 
-    std::string fileName = paths["mesh"][name];
+    std::string meshDir = paths["mesh"];
+    std::string fileName = meshDir + name;
     std::ifstream File(fileName);
     std::stringstream Stream;
     Stream << File.rdbuf();

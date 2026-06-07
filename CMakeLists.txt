@@ -17,7 +17,11 @@ set(PROJECT_SOURCES
 
     src/Transform.cpp 	src/Transform.hpp
 
-    src/Mesh.cpp  src/Mesh.hpp
+    src/Physics.cpp	src/Physics.hpp
+
+    src/Mesh.cpp   	src/Mesh.hpp
+
+    src/Light.cpp 	src/Light.hpp
 
     src/Camera.cpp 	src/Camera.hpp
 )

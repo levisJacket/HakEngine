@@ -13,28 +13,28 @@ Camera::Camera(float screenRatio){
     );
 }
 
-glm::mat4 Camera::ViewMatrix(){
-    glm::vec3 invLocation = - *location;
+glm::mat4 Camera::viewMatrix(){
+    glm::vec3 invPosition = - *position;
     glm::quat invRotation = glm::inverse(*rotation);
 
-    glm::mat4 matLocation = {
-	1.0, 0.0, 0.0, invLocation.x,
-	0.0, 1.0, 0.0, invLocation.y,
-	0.0, 0.0, 1.0, invLocation.z,
+    glm::mat4 matPosition = {
+	1.0, 0.0, 0.0, invPosition.x,
+	0.0, 1.0, 0.0, invPosition.y,
+	0.0, 0.0, 1.0, invPosition.z,
 	0.0, 0.0, 0.0, 1.0
     };
     glm::mat4 matRotation = glm::mat4_cast(invRotation);
-    return matLocation * matRotation;
+    return matPosition * matRotation;
 }
 
-glm::mat4 Camera::ProjectionMatrix(){
+glm::mat4 Camera::projectionMatrix(){
     return projMatrix;
 }
 
-void Camera::SetLocation(glm::vec3 *location){
-    this->location = location;
+void Camera::setPosition(glm::vec3 *position){
+    this->position = position;
 }
     
-void Camera::SetRotation(glm::quat *rotation){
+void Camera::setRotation(glm::quat *rotation){
     this->rotation = rotation;
 }

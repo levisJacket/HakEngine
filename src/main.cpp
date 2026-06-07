@@ -1,6 +1,7 @@
 #include "AssetLoader.hpp"
 #include "Entity.hpp"
 #include "Camera.hpp"
+#include "Light.hpp"
 #include "Mesh.hpp"
 
 #include <glad/glad.h>
@@ -39,45 +40,49 @@ int main(void)
 	return -1;
     }
 
-    AssetLoader myLoader = AssetLoader(PATH);
-    Shader myShader = myLoader.LoadShader();
-    
-    std::vector<Entity> entityList;
-    
-    Mesh cubeMesh = myLoader.LoadMesh("miku");
-
-    entityList.push_back( Entity(&cubeMesh) );
-    entityList[0].getTransform()->SetLocation(0.0f, -4.0f, 10.0f);
-
-
-    glm::quat camRotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
-    glm::vec3 camLocation = glm::vec3(0.0f, 0.0f, 0.0f);
-    Camera myCamera = Camera(0.75f);
-    myCamera.SetLocation(&camLocation);
-    myCamera.SetRotation(&camRotation);
-
+    glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CW);
 
+    AssetLoader myLoader = AssetLoader(PATH);
+    Shader myShader = myLoader.LoadShader();
+    
+    std::vector<Entity> entityList;    
+    std::vector<Light> lights;
+    
+    Mesh cubeMesh = myLoader.LoadMesh("miku.stl");
+
+    entityList.push_back( Entity(&cubeMesh) );
+    entityList[0].getTransform()->setPosition(0.0f, -3.0f, 10.0f);
+
+    glm::quat camRotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+    glm::vec3 camPosition = glm::vec3(0.0f, 0.0f, 0.0f);
+    Camera myCamera = Camera(0.75f);
+    myCamera.setPosition(&camPosition);
+    myCamera.setRotation(&camRotation);
+
+    lights.push_back(Light(glm::vec3(0.0, 0.0, 0.0), glm::vec3(1.0, 1.0, 1.0)));
+
     unsigned int VAO;
     myShader.use();
 
+    for(int i = 0; i < lights.size(); i++ ){
+	myShader.setVec3("u_Lights["+std::to_string(i)+"].position", lights[i].position);
+	myShader.setVec3("u_Lights["+std::to_string(i)+"].color", lights[i].color);
+    }
+
     while (!glfwWindowShouldClose(window))	{
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	float timeValue = glfwGetTime();
 
-	myShader.setMat4("u_ViewProjectionMatrix", myCamera.ViewMatrix() * myCamera.ProjectionMatrix());
+	myShader.setMat4("u_ViewProjectionMatrix", myCamera.viewMatrix() * myCamera.projectionMatrix());
 
-	myShader.setVec3("u_Lights[0].position", -5.0f, 0.0f, 0.0f);
-	myShader.setVec3("u_Lights[0].color", 0.2f, 0.0f, 0.0f);
-	myShader.setVec3("u_Lights[1].position", 5.0f, 0.0f, 0.0f);
-	myShader.setVec3("u_Lights[1].color", 0.0f, 1.0f, 1.0f);
+	entityList[0].getTransform()->setRotation(1.55f, -timeValue, 0.0f);
 
-	entityList[0].getTransform()->SetRotation(1.5f, timeValue, 0.0f);
 	for(int i = 0; i < entityList.size(); i++){
-	    myShader.setMat4("u_ModelMatrix", entityList[i].ModelMatrix());
-	    VAO = entityList[i].MeshVAO();
+	    myShader.setMat4("u_ModelMatrix", entityList[i].modelMatrix());
+	    VAO = entityList[i].meshVAO();
 	    glBindVertexArray(VAO);
 	    glDrawElements(GL_TRIANGLES, entityList[i].vertexCount(), GL_UNSIGNED_INT, 0);
 	}

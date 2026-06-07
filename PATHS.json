@@ -1,8 +1,5 @@
 {
     "vertex":"../shaders/basic.vert",
     "fragment":"../shaders/basic.frag",
-    "mesh":{
-	"cube":"../assets/cube.stl",
-	"miku":"../assets/miku.stl"
-    }
+    "mesh":"../assets/mesh/"
 }

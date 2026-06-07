@@ -26,18 +26,18 @@ Mesh::Mesh(std::vector<float> vertices, std::vector<unsigned int> indices){
     glBindVertexArray(0); 
 }
 
-unsigned int Mesh::GetVBO() const {
+unsigned int Mesh::getVBO() const {
     return VBO;
 }
 
-unsigned int Mesh::GetVAO() const {
+unsigned int Mesh::getVAO() const {
     return VAO;
 }
 
-unsigned int Mesh::GetEBO() const {
+unsigned int Mesh::getEBO() const {
     return EBO;
 }
 
-int Mesh::GetVertexCount(){
+int Mesh::getVertexCount(){
     return vertexCount;
 }
