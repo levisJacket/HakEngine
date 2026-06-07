@@ -16,9 +16,21 @@ void Physics::addForce(glm::vec3 force){
 }
 
 void Physics::update(float duration){
-    position += velocity * duration;
-    velocity += forceAccum * inverseMass;
+    glm::vec3 acc = glm::vec3(0.0f, -9.8f, 0.0f);
+ 
+    acc += forceAccum * inverseMass;
+    velocity += acc * duration;
+
+    forceAccum = glm::vec3(0.0f, 0.0f, 0.0f);
+
     velocity = velocity * glm::pow(damping, duration);
 
+    position += velocity * duration;
+    if(position.y < 0)	{
+	position.y = 0.0f;
+	if (velocity.y < 0.0f) {
+	    velocity.y = -velocity.y * 0.5;
+	}
+    }
     entity->transform.setPosition(position);
 }
