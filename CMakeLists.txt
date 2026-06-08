@@ -10,16 +10,17 @@ set(PROJECT_SOURCES
     src/glad.c
 
     src/AssetLoader.cpp src/AssetLoader.hpp
+    src/Mesh.cpp   	src/Mesh.hpp
 
-    src/Shader.cpp 	src/Shader.hpp
-
+    src/EntityManager.cpp	src/EntityManager.hpp
     src/Entity.cpp 	src/Entity.hpp
-
     src/Transform.cpp 	src/Transform.hpp
 
+    src/PhysicsManager.cpp  	src/PhysicsManager.hpp
     src/Physics.cpp	src/Physics.hpp
+    src/Shader.cpp 	src/Shader.hpp
 
-    src/Mesh.cpp   	src/Mesh.hpp
+    src/Renderer.cpp 	src/Renderer.hpp
 
     src/Light.cpp 	src/Light.hpp
 

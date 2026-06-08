@@ -1,18 +1,24 @@
 #include "Physics.hpp"
 
-Physics::Physics(Entity *entity){
-    this->entity = entity;
+Physics::Physics(){
+    
+}
 
-    position = entity->transform.position;
+Physics::Physics(unsigned int ownerID, glm::vec3 position){
+    this->ownerID = ownerID;
+    this->position = position;
     velocity = glm::vec3(0.0f, 0.0f, 0.0f);
-    //acceleration = glm::vec3(0.0f, 0.0f, 0.0f);
     forceAccum = glm::vec3(0.0f, 0.0f, 0.0f);
-    damping = 0.9f;
+    damping = 0.95f;
     inverseMass = 1.0f;
 }
 
 void Physics::addForce(glm::vec3 force){
     forceAccum += force;
+}
+
+void Physics::addImpulse(glm::vec3 impulse){
+    velocity = impulse * inverseMass;
 }
 
 void Physics::update(float duration){
@@ -29,8 +35,7 @@ void Physics::update(float duration){
     if(position.y < 0)	{
 	position.y = 0.0f;
 	if (velocity.y < 0.0f) {
-	    velocity.y = -velocity.y * 0.5;
+	    velocity.y = 0.0f;
 	}
     }
-    entity->transform.setPosition(position);
 }

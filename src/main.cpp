@@ -1,5 +1,7 @@
 #include "AssetLoader.hpp"
-#include "Entity.hpp"
+#include "EntityManager.hpp"
+#include "PhysicsManager.hpp"
+#include "Renderer.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
 #include "Mesh.hpp"
@@ -53,19 +55,21 @@ int main(void)
     AssetLoader myLoader = AssetLoader(PATH);
     Shader myShader = myLoader.LoadShader();
     
-    std::vector<Entity> entityList;    
+    EntityManager entityManager = EntityManager();
+    PhysicsManager physicsManager = PhysicsManager(&entityManager);
+    Renderer renderer = Renderer(&entityManager, &myShader);
+
     std::vector<Light> lights;
-    //std::vector<Physics> physics;
     
-    Mesh cubeMesh = myLoader.LoadMesh("miku.stl");
+    Mesh myMesh = myLoader.LoadMesh("sphere.stl");
 
-    entityList.push_back( Entity(&cubeMesh) );
-    entityList[0].getTransform()->setPosition(0.0f, 10.0f, 10.0f);
-    entityList[0].getTransform()->setRotation(1.55f, 3.14f, 0.0f);
+    unsigned int ent1 = entityManager.createEntity(&myMesh);
+    entityManager.getTransform(ent1)->setPosition(0.0f, 10.0f, 10.0f);
     
-    lights.push_back(Light(glm::vec3(0.0, 0.0, 0.0), glm::vec3(1.0, 1.0, 1.0)));
+    lights.push_back(Light(glm::vec3(10.0, 5.0, 0.0), glm::vec3(0.5, 0.5, 0.5)));
+    lights.push_back(Light(glm::vec3(-10.0, 0.0, 0.0), glm::vec3(0.5, 0.5, 0.5)));
 
-    physics.push_back(Physics(&entityList[0]));
+    physicsManager.addPhysics(ent1);
 
     glm::quat camRotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
     glm::vec3 camPosition = glm::vec3(0.0f, 5.0f, 0.0f);
@@ -86,18 +90,12 @@ int main(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	timeStep = glfwGetTime() - timeValue;
 	timeValue = glfwGetTime();
-
 	myShader.setMat4("u_ViewProjectionMatrix", myCamera.viewMatrix() * myCamera.projectionMatrix());
 
-	for(int i = 0; i < physics.size(); i++){
-	    physics[i].update(timeStep);
-	}
-	for(int i = 0; i < entityList.size(); i++){
-	    myShader.setMat4("u_ModelMatrix", entityList[i].modelMatrix());
-	    VAO = entityList[i].meshVAO();
-	    glBindVertexArray(VAO);
-	    glDrawElements(GL_TRIANGLES, entityList[i].vertexCount(), GL_UNSIGNED_INT, 0);
-	}
+	physicsManager.update(timeStep);
+
+	renderer.render();
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -113,6 +111,6 @@ void error_callback(int error, const char* description)	{
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)	{
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
-    if (key == GLFW_KEY_W && action == GLFW_PRESS)
-	physics[0].addForce(glm::vec3(0.0, 500.0, 0.0));
+        
+    if (key == GLFW_KEY_W && action == GLFW_PRESS){}
 }

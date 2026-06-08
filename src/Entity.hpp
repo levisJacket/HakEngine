@@ -6,9 +6,8 @@
 #include <glm/gtc/quaternion.hpp>
 
 class Entity{
-    public:
-	Transform transform;
     private:
+	Transform transform;
 	Mesh *mesh;
     public:
 	Entity();
@@ -17,5 +16,6 @@ class Entity{
 	glm::mat4 modelMatrix();
 	unsigned int meshVAO();
 	int vertexCount();
-	Transform* getTransform(); 
+
+	Transform* getTransform();
 };

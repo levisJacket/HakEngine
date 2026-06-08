@@ -5,17 +5,18 @@
 #include <glm/glm.hpp>
 
 class Physics{
-    private:
-	glm::vec3 position;
-	glm::vec3 velocity;
-	//glm::vec3 acceleration;
-	glm::vec3 forceAccum;
-	float damping;
-	float inverseMass;
+private:
+    glm::vec3 velocity;
+    glm::vec3 forceAccum;
+    float damping;
+    float inverseMass;
 
-	Entity *entity;
-    public:
-	Physics(Entity *entity);
-	void addForce(glm::vec3 force);
-	void update(float duration);
+public:
+    glm::vec3 position;
+    unsigned int ownerID;
+    Physics();
+    Physics(unsigned int ownerID, glm::vec3 position);
+    void addForce(glm::vec3 force);
+    void addImpulse(glm::vec3 impulse);
+    void update(float duration);
 };
