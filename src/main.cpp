@@ -13,11 +13,12 @@
 #include <vector>
 #include <chrono>
 
-std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+using glm::vec3;
 
 static std::string PATH = "../PATHS.json";
 void error_callback(int error, const char* description);
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
 
 std::vector<Physics> physics;
 
@@ -61,18 +62,23 @@ int main(void)
 
     std::vector<Light> lights;
     
-    Mesh myMesh = myLoader.LoadMesh("sphere.stl");
+    Mesh sphereMesh = myLoader.LoadMesh("sphere.stl");
+    Mesh floorMesh = myLoader.LoadMesh("floor.stl");
 
-    unsigned int ent1 = entityManager.createEntity(&myMesh);
-    entityManager.getTransform(ent1)->setPosition(0.0f, 10.0f, 10.0f);
-    
-    lights.push_back(Light(glm::vec3(10.0, 5.0, 0.0), glm::vec3(0.5, 0.5, 0.5)));
-    lights.push_back(Light(glm::vec3(-10.0, 0.0, 0.0), glm::vec3(0.5, 0.5, 0.5)));
+    unsigned int ent1 = entityManager.createEntity(&sphereMesh);
+    entityManager.getEntity(ent1)->setPosition(vec3(0.0f, 10.0f, 10.0f));
+    entityManager.getEntity(ent1)->setScale(3.0f);
+
+    unsigned int ent2 = entityManager.createEntity(&floorMesh);
+    entityManager.getEntity(ent2)->setPosition(vec3(0.0f, -1.5f, 0.0f));
+    entityManager.getEntity(ent2)->setScale(30.0f);
+
+    lights.push_back(Light(vec3(3.0, 3.0, 3.0), vec3(1.0, 1.0, 1.0)));
 
     physicsManager.addPhysics(ent1);
 
     glm::quat camRotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
-    glm::vec3 camPosition = glm::vec3(0.0f, 5.0f, 0.0f);
+    vec3 camPosition = vec3(0.0f, 3.0f, 0.0f);
     Camera myCamera = Camera(0.75f);
     myCamera.setPosition(&camPosition);
     myCamera.setRotation(&camRotation);

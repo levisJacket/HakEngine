@@ -8,7 +8,7 @@ PhysicsManager::PhysicsManager(EntityManager *entityManager){
 bool PhysicsManager::addPhysics(unsigned int entityID){
     if (physicsCount == MAX_PHYSICS)	return false;
 
-    physics[physicsCount] = Physics(entityID, entityManager->getTransform(entityID)->position);
+    physics[physicsCount] = Physics(entityID, entityManager->getEntity(entityID)->getPosition());
     physicsCount++;
     return true;
 }
@@ -16,6 +16,6 @@ bool PhysicsManager::addPhysics(unsigned int entityID){
 void PhysicsManager::update(float timeStep){
     for(int i = 0; i < physicsCount; i++){
 	physics[i].update(timeStep);
-	entityManager->getTransform(physics[i].ownerID)->position = physics[i].position;
+	entityManager->getEntity(physics[i].ownerID)->setPosition(physics[i].position);
     }
 }

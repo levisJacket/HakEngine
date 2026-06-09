@@ -1,7 +1,9 @@
 #pragma once
 
-class Collider{
-private:
-
+class SphereCollider{
 public:
+    unsigned int ownerID;
+    float radius;
+    
 }
+

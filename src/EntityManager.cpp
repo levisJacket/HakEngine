@@ -13,10 +13,6 @@ unsigned int EntityManager::createEntity(Mesh *mesh){
 }
 
 Entity* EntityManager::getEntity(unsigned int entityID){
-    return &entityList[entityID - 1];
-}
-
-Transform* EntityManager::getTransform(unsigned int entityID){
     if (entityID < 1 || entityID > MAXENTITY)	return nullptr;
-    return entityList[entityID - 1].getTransform();
+    return &entityList[entityID - 1];
 }

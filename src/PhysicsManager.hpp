@@ -13,5 +13,6 @@ private:
 public:
     PhysicsManager(EntityManager *entityManager);
     bool addPhysics(unsigned int entityID);
+    
     void update(float timeStep);
 };

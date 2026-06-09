@@ -22,7 +22,14 @@ int Entity::vertexCount(){
     return mesh->getVertexCount();
 }
 
-Transform* Entity::getTransform(){
-    return &transform;
+void Entity::setPosition(glm::vec3 position){
+    transform.position = position;
 }
 
+glm::vec3 Entity::getPosition(){
+    return transform.position;
+}
+
+void Entity::setScale(float scale){
+    transform.scale = scale;
+}

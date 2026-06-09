@@ -17,5 +17,8 @@ class Entity{
 	unsigned int meshVAO();
 	int vertexCount();
 
-	Transform* getTransform();
+	void setPosition(glm::vec3 position);
+	glm::vec3 getPosition();
+
+	void setScale(float scale);
 };

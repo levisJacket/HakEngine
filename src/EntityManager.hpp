@@ -13,5 +13,4 @@ public:
     unsigned int createEntity(Mesh *mesh);
 
     Entity* getEntity(unsigned int entityID);
-    Transform* getTransform(unsigned int entityID);
 };

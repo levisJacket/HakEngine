@@ -35,7 +35,7 @@ void Physics::update(float duration){
     if(position.y < 0)	{
 	position.y = 0.0f;
 	if (velocity.y < 0.0f) {
-	    velocity.y = 0.0f;
+	    velocity.y = velocity.y * -0.8;
 	}
     }
 }

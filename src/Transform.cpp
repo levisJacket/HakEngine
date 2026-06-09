@@ -3,7 +3,7 @@
 Transform::Transform(){
     rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
     position = glm::vec3(0.0f, 0.0f, 0.0f);
-    scale = 5.0f;
+    scale = 1.0f;
 }
 
 void Transform::setRotation(float rotX, float rotY, float rotZ){
@@ -20,6 +20,11 @@ void Transform::setPosition(float x, float y, float z){
 void Transform::setPosition(glm::vec3 position){
     this->position = position;
 }
+
+void Transform::setScale(float scale){
+    this->scale = scale;
+}
+
 glm::mat4 Transform::ModelMatrix(){
     glm::mat4 matScale = {
 	scale, 0.0, 0.0, 0.0,
