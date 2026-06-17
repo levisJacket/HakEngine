@@ -10,6 +10,8 @@ class Entity{
 	Transform transform;
 	Mesh *mesh;
     public:
+	bool hasPhysics = false;
+
 	Entity();
 	Entity(Mesh *mesh);
 

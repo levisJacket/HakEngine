@@ -18,10 +18,12 @@ set(PROJECT_SOURCES
 
     src/PhysicsManager.cpp  	src/PhysicsManager.hpp
     src/Physics.cpp	src/Physics.hpp
-    src/Shader.cpp 	src/Shader.hpp
+    src/CollisionManager.cpp 	src/CollisionManager.hpp
+    src/Collider.cpp 	src/Collider.hpp
+    src/Contact.hpp
 
     src/Renderer.cpp 	src/Renderer.hpp
-
+    src/Shader.cpp 	src/Shader.hpp
     src/Light.cpp 	src/Light.hpp
 
     src/Camera.cpp 	src/Camera.hpp

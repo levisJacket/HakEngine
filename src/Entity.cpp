@@ -30,6 +30,7 @@ glm::vec3 Entity::getPosition(){
     return transform.position;
 }
 
+
 void Entity::setScale(float scale){
     transform.scale = scale;
 }

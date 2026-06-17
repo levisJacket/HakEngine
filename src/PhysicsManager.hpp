@@ -2,6 +2,7 @@
 
 #include "EntityManager.hpp"
 #include "Physics.hpp"
+#include "Collider.hpp"
 
 #define MAX_PHYSICS 8
 
@@ -12,7 +13,11 @@ private:
     unsigned int physicsCount;
 public:
     PhysicsManager(EntityManager *entityManager);
-    bool addPhysics(unsigned int entityID);
-    
+    bool addPhysics(unsigned int entityID, float mass);
+
+    Physics* getPhysics(unsigned int entityID);
+     
     void update(float timeStep);
+
+    void addImpulse(unsigned int entityID, glm::vec3 force);
 };

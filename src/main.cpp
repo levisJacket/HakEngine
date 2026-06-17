@@ -1,6 +1,7 @@
 #include "AssetLoader.hpp"
 #include "EntityManager.hpp"
 #include "PhysicsManager.hpp"
+#include "CollisionManager.hpp"
 #include "Renderer.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
@@ -18,9 +19,6 @@ using glm::vec3;
 static std::string PATH = "../PATHS.json";
 void error_callback(int error, const char* description);
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
-
-std::vector<Physics> physics;
 
 int main(void)
 {
@@ -58,6 +56,7 @@ int main(void)
     
     EntityManager entityManager = EntityManager();
     PhysicsManager physicsManager = PhysicsManager(&entityManager);
+    CollisionManager collisionManager = CollisionManager(&entityManager, &physicsManager);
     Renderer renderer = Renderer(&entityManager, &myShader);
 
     std::vector<Light> lights;
@@ -65,17 +64,27 @@ int main(void)
     Mesh sphereMesh = myLoader.LoadMesh("sphere.stl");
     Mesh floorMesh = myLoader.LoadMesh("floor.stl");
 
-    unsigned int ent1 = entityManager.createEntity(&sphereMesh);
-    entityManager.getEntity(ent1)->setPosition(vec3(0.0f, 10.0f, 10.0f));
-    entityManager.getEntity(ent1)->setScale(3.0f);
+    unsigned int sphere1 = entityManager.createEntity(&sphereMesh);
+    entityManager.getEntity(sphere1)->setPosition(vec3(-5.0f, 0.0f, 10.0f));
+    entityManager.getEntity(sphere1)->setScale(2.0f);
 
-    unsigned int ent2 = entityManager.createEntity(&floorMesh);
-    entityManager.getEntity(ent2)->setPosition(vec3(0.0f, -1.5f, 0.0f));
-    entityManager.getEntity(ent2)->setScale(30.0f);
+    unsigned int sphere2 = entityManager.createEntity(&sphereMesh);
+    entityManager.getEntity(sphere2)->setPosition(vec3(10.0f, 0.0f, 10.0f));
+    entityManager.getEntity(sphere2)->setScale(2.0f);
+
+    unsigned int floor = entityManager.createEntity(&floorMesh);
+    entityManager.getEntity(floor)->setPosition(vec3(0.0f, -1.0f, 0.0f));
+    entityManager.getEntity(floor)->setScale(30.0f);
+
+    physicsManager.addPhysics(sphere1, 1.0f);
+    collisionManager.addCollider(sphere1);
+    physicsManager.addPhysics(sphere2, 5.0f);
+    collisionManager.addCollider(sphere2);
+
+    physicsManager.addImpulse(sphere1, vec3(1.0f, 0.0f, 0.0f));
+    physicsManager.addImpulse(sphere2, vec3(-10.0f, 0.0f, 0.0f));
 
     lights.push_back(Light(vec3(3.0, 3.0, 3.0), vec3(1.0, 1.0, 1.0)));
-
-    physicsManager.addPhysics(ent1);
 
     glm::quat camRotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
     vec3 camPosition = vec3(0.0f, 3.0f, 0.0f);
@@ -99,6 +108,7 @@ int main(void)
 	myShader.setMat4("u_ViewProjectionMatrix", myCamera.viewMatrix() * myCamera.projectionMatrix());
 
 	physicsManager.update(timeStep);
+	collisionManager.resolve(timeStep);
 
 	renderer.render();
 
