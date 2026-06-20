@@ -12,6 +12,7 @@ private:
     Physics physics[MAX_PHYSICS];
     unsigned int physicsCount;
 public:
+    PhysicsManager();
     PhysicsManager(EntityManager *entityManager);
     bool addPhysics(unsigned int entityID, float mass);
 

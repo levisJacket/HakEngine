@@ -1,6 +1,8 @@
 #include "Renderer.hpp"
 #include <glad/glad.h>
 
+Renderer::Renderer(){}
+
 Renderer::Renderer(EntityManager *entityManager, Shader *shader){
     this->entityManager = entityManager;
     this->shader = shader;

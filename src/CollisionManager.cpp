@@ -2,6 +2,8 @@
 #include <vector>
 #include <iostream>
 
+CollisionManager::CollisionManager(){}
+
 CollisionManager::CollisionManager(EntityManager *entityManager, PhysicsManager *physicsManager){
     this->entityManager = entityManager;
     this->physicsManager = physicsManager;

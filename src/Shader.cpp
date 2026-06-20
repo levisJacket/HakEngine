@@ -2,6 +2,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+Shader::Shader(){}
+
 Shader::Shader(const char* vertexSource, const char* fragmentSource){
     int success;
     char infoLog[512];

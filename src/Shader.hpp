@@ -17,6 +17,7 @@ private:
     int getUniformLocation(const std::string &name) const;
 
 public:
+    Shader();
     Shader(const char* vertexSource, const char* fragmentSource);
 
     void use();

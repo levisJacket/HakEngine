@@ -9,6 +9,8 @@ set(PROJECT_SOURCES
     src/main.cpp
     src/glad.c
 
+    src/Engine.cpp 	src/Engine.hpp
+
     src/AssetLoader.cpp src/AssetLoader.hpp
     src/Mesh.cpp   	src/Mesh.hpp
 

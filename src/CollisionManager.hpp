@@ -15,6 +15,7 @@ private:
     PhysicsManager *physicsManager;
     
 public:
+    CollisionManager();
     CollisionManager(EntityManager *entityManager, PhysicsManager *physicsManager);
     bool addCollider(unsigned int entityID);
 

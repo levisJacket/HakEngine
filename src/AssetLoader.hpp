@@ -12,6 +12,7 @@ private:
     mutable std::unordered_map<std::string, Mesh> meshMap;
     nlohmann::json paths;
 public:
+    AssetLoader();
     AssetLoader(std::string path);
     Shader loadShader();
     Mesh* loadMesh(std::string name);

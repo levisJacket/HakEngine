@@ -12,6 +12,7 @@ class Camera{
 	float fov;
 	float near, far;
     public:
+	Camera();
 	Camera(float screenRatio);
 	void setPosition(glm::vec3 *position);
 	void setRotation(glm::quat *rotation);

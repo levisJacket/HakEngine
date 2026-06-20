@@ -8,6 +8,7 @@
 using std::string;
 using nlohmann::json;
 
+AssetLoader::AssetLoader(){}
 AssetLoader::AssetLoader(string path){
     std::ifstream file(path);
     if (!file.is_open()) {

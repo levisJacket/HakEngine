@@ -1,5 +1,7 @@
 #include "PhysicsManager.hpp"
 
+PhysicsManager::PhysicsManager(){}
+
 PhysicsManager::PhysicsManager(EntityManager *entityManager){
     this->entityManager = entityManager;
     physicsCount = 0;

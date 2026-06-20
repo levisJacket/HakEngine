@@ -1,5 +1,7 @@
 #include "Camera.hpp"
 
+Camera::Camera(){}
+
 Camera::Camera(float screenRatio){
     this->screenRatio = screenRatio;
     fov = 1.0f;

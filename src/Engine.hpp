@@ -6,8 +6,6 @@
 #include "Renderer.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
-#include "Mesh.hpp"
-#include "Physics.hpp"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -25,7 +23,9 @@ private:
     AssetLoader assetLoader;
     Shader shader;
     
+    std::vector<Light> lights;
     GLFWwindow* window;
+    Camera camera;
 public:
     Engine();     
     ~Engine();
@@ -34,5 +34,12 @@ public:
     void run();
     void terminate();
 
-    unsigned int createEntity();
+    void addLight(glm::vec3 position, glm::vec3 color);
+
+    unsigned int createEntity(std::string name);
+    Entity* getEntity(unsigned int entityID);
+    void addPhysics(unsigned int entityID, float mass);
+    void addCollider(unsigned int entityID);
+
+    void addImpulse(unsigned int entityID, glm::vec3 force);
 };
