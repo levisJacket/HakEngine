@@ -3,6 +3,8 @@
 
 #include <glad/glad.h>
 
+Mesh::Mesh(){}
+
 Mesh::Mesh(std::vector<float> vertices, std::vector<unsigned int> indices){
     vertexCount = vertices.size();
     glGenVertexArrays(1, &VAO);

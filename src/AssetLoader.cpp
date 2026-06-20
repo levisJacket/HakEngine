@@ -1,13 +1,9 @@
 #include "AssetLoader.hpp"
-#include "Shader.hpp"
-#include "Mesh.hpp"
 
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <string>
 #include <vector>
-#include <nlohmann/json.hpp>
 
 using std::string;
 using nlohmann::json;
@@ -22,7 +18,7 @@ AssetLoader::AssetLoader(string path){
     file.close();
 }
 
-Shader AssetLoader::LoadShader(){
+Shader AssetLoader::loadShader(){
     std::stringstream vertStream;
     std::stringstream fragStream;
 
@@ -39,7 +35,11 @@ Shader AssetLoader::LoadShader(){
     return Shader(vertexSrc,fragmentSrc);
 }
 
-Mesh AssetLoader::LoadMesh(std::string name){
+Mesh* AssetLoader::loadMesh(std::string name){
+    if (meshMap.find(name) != meshMap.end()){
+	return &meshMap[name];
+    }
+
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
 
@@ -72,5 +72,6 @@ Mesh AssetLoader::LoadMesh(std::string name){
 	}
     }
 
-    return Mesh(vertices, indices);
+    meshMap[name] = Mesh(vertices, indices);
+    return &meshMap[name];
 }
