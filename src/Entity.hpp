@@ -17,7 +17,9 @@ class Entity{
 
 	glm::mat4 modelMatrix();
 	unsigned int meshVAO();
-	int vertexCount();
+	unsigned int meshTexture();
+
+	int indexCount();
 
 	void setPosition(glm::vec3 position);
 	glm::vec3 getPosition();

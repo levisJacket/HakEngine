@@ -18,8 +18,12 @@ unsigned int Entity::meshVAO(){
     return mesh->getVAO();
 }
 
-int Entity::vertexCount(){
-    return mesh->getVertexCount();
+unsigned int Entity::meshTexture(){
+    return mesh->getTexture();
+}
+
+int Entity::indexCount(){
+    return mesh->getIndexCount();
 }
 
 void Entity::setPosition(glm::vec3 position){
@@ -29,7 +33,6 @@ void Entity::setPosition(glm::vec3 position){
 glm::vec3 Entity::getPosition(){
     return transform.position;
 }
-
 
 void Entity::setScale(float scale){
     transform.scale = scale;

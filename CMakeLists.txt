@@ -13,6 +13,7 @@ set(PROJECT_SOURCES
 
     src/AssetLoader.cpp src/AssetLoader.hpp
     src/Mesh.cpp   	src/Mesh.hpp
+    src/stb_image.h
 
     src/EntityManager.cpp	src/EntityManager.hpp
     src/Entity.cpp 	src/Entity.hpp

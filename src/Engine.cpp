@@ -55,6 +55,7 @@ void Engine::run(){
     glm::vec3 camPosition = glm::vec3(0.0f, 3.0f, 0.0f);
     camera.setPosition(&camPosition);
     camera.setRotation(&camRotation);
+    //shader.setInt("u_Texture", 0);
 
     for(int i = 0; i < lights.size(); i++ ){
 	shader.setVec3("u_Lights["+std::to_string(i)+"].position", lights[i].position);
@@ -89,8 +90,17 @@ void Engine::addLight(glm::vec3 position, glm::vec3 color){
 }
 
 unsigned int Engine::createEntity(std::string name){
-    Mesh *mesh = assetLoader.loadMesh(name);
-    return entityManager.createEntity(mesh);
+    Mesh *mesh;
+    int len = name.length();
+
+    if (name.substr(len - 4) == ".stl"){
+	Mesh *mesh = assetLoader.loadMesh(name);
+	return entityManager.createEntity(mesh);
+    } else if (name.substr(len - 4) == ".obj"){
+	Mesh *mesh = assetLoader.loadMesh(name, name.substr(0, len - 4) + ".png");
+	return entityManager.createEntity(mesh);
+    } 
+    return 0;
 }
 
 Entity* Engine::getEntity(unsigned int entityID){

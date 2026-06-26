@@ -2,6 +2,7 @@
 
 in vec4 worldPosition;
 in vec4 worldNormal;
+in vec2 uvFrag;
 
 struct PointLight{
     vec3 position;
@@ -10,6 +11,8 @@ struct PointLight{
 
 const int MAX_LIGHT = 4;
 uniform PointLight u_Lights[MAX_LIGHT];
+
+uniform sampler2D u_Texture;
 
 out vec4 FragColor;
 
@@ -23,6 +26,9 @@ void main()
 	float a = dot(faceNormal, faceToLight);
 	color = color + u_Lights[i].color * a;
     }
+
+
+    color = vec3(texture(u_Texture, uvFrag)) * color;
 
     FragColor = vec4(color, 1.0);
 }
