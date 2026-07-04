@@ -23,7 +23,7 @@ set(PROJECT_SOURCES
     src/Physics.cpp	src/Physics.hpp
     src/CollisionManager.cpp 	src/CollisionManager.hpp
     src/Collider.cpp 	src/Collider.hpp
-    src/Contact.hpp
+    src/Contact.hpp	src/Contact.cpp
 
     src/Renderer.cpp 	src/Renderer.hpp
     src/Shader.cpp 	src/Shader.hpp

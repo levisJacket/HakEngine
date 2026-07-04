@@ -31,8 +31,8 @@ int main(void)
     engine.addPhysics(sphere2, 5.0f);
     engine.addCollider(sphere2);
 
-    /*engine.addImpulse(sphere1, vec3(1.0f, 15.0f, 0.0f));
-    engine.addImpulse(sphere2, vec3(-20.0f, 30.0f, 0.0f));*/
+    engine.addImpulse(sphere1, vec3(1.0f, 15.0f, 0.0f));
+    engine.addImpulse(sphere2, vec3(-20.0f, 30.0f, 0.0f));
 
     engine.addLight(vec3(0, 3, 0), vec3(1, 1, 1));
 

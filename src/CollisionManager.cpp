@@ -1,46 +1,43 @@
 #include "CollisionManager.hpp"
+#include "Contact.hpp"
 #include <vector>
 #include <iostream>
 
 CollisionManager::CollisionManager(){}
 
-CollisionManager::CollisionManager(EntityManager *entityManager, PhysicsManager *physicsManager){
+CollisionManager::CollisionManager(EntityManager* entityManager, PhysicsManager* physicsManager){
     this->entityManager = entityManager;
     this->physicsManager = physicsManager;
-    colliderCount = 0;
 }
 
 bool CollisionManager::addCollider(unsigned int entityID){
-    if (colliderCount == MAX_COLLIDER)	return false;
+    if (collider.size() == MAX_COLLIDER)	{
+	std::cout << "failed to create; max collider reached" << std::endl;
+	return false;
+    }
 
     Physics *physics = physicsManager->getPhysics(entityID);
-    if (physics == nullptr)	return false;
+    collider.push_back(std::make_unique<ColliderSphere>(physics, 1.0f));
 
-    collider[colliderCount] = ColliderSphere(entityID, physics);
-    colliderCount++;
     return true;
 }
 
 void CollisionManager::resolve(float duration){
-    for (int i = 0; i < colliderCount; i++){
-	glm::vec3 position = entityManager->getEntity(collider[i].ownerID)->getPosition();
-	collider[i].position = position;
+    for (int i = 0; i < collider.size(); i++){
+	if (collider[i]->physics) {
+	    collider[i]->position = collider[i]->physics->position;
+	}
     }
 
     std::vector<Contact> contacts;
-    for (int i = 0; i < colliderCount; i++){
-	for (int j = i + 1; j < colliderCount; j++){
-	    
-	    glm::vec3 diff = collider[i].position - collider[j].position;
-	    float distance = glm::length(diff);
-	    float radiusSum = collider[i].radius + collider[j].radius;
-	    if (radiusSum > distance){
-		Contact c;
-		c.entityA = &collider[i];
-		c.entityB = &collider[j];
-		c.contactNormal = glm::normalize(diff);
-		c.penetration = radiusSum - distance;
-		c.separatingVelocity = glm::dot((c.entityA->physics->velocity - c.entityB->physics->velocity) , c.contactNormal);
+    for (int i = 0; i < collider.size(); i++){
+	for (int j = i + 1; j < collider.size(); j++){
+	    if (!collider[i]->physics && !collider[j]->physics){
+		continue;
+	    }
+
+	    if (isColliding(collider[i].get(), collider[j].get())){
+		Contact c = buildContact(collider[i].get(), collider[j].get());
 		contacts.push_back(c);
 	    }
 	}
@@ -53,7 +50,7 @@ void CollisionManager::resolve(float duration){
 	float minimumSep = 1000000.0f;
 	int minIndex = contacts.size();
 	for (int i = 0; i < contacts.size(); i++){
-	    float temp = contacts[i].separatingVelocity;
+	    float temp = contacts[i].calcSeparatingVelocity();
 	    if (temp < minimumSep && (temp < 0.0f || contacts[i].penetration > 0.0f)){
 		minimumSep = temp;
 		minIndex = i;
@@ -65,15 +62,16 @@ void CollisionManager::resolve(float duration){
 	Contact c = contacts[minIndex];
 	if (c.penetration <= 0.0f) { continue; }
 
-	Physics *physicsA = c.entityA->physics;
-	Physics *physicsB = c.entityB->physics;
+	Physics *physicsA = c.colliderA->physics;
+	Physics *physicsB = c.colliderB->physics;
 
 	float sumMass = physicsA->inverseMass + physicsB->inverseMass;
 	if (sumMass <= 0.0f) { continue; }
 	
 	glm::vec3 resolveUnit = c.contactNormal * c.penetration / sumMass;
-	c.entityA->position += resolveUnit * physicsA->inverseMass;
-	c.entityB->position += resolveUnit * physicsB->inverseMass * -1.0f;
+
+	physicsA->position += resolveUnit * physicsA->inverseMass;
+	physicsB->position += resolveUnit * physicsB->inverseMass * -1.0f;
 
 	float accCausedSepVelocity = glm::dot((physicsB->acceleration - physicsA->acceleration), c.contactNormal) * duration;
 
@@ -96,8 +94,10 @@ void CollisionManager::resolve(float duration){
 	iterationsUsed++;
     }
 
-    for (int i = 0; i < colliderCount; i++){
-	entityManager->getEntity(collider[i].ownerID)->setPosition(collider[i].position);
+    for (int i = 0; i < collider.size(); i++){
+	if (collider[i]->physics) {
+	    collider[i]->physics->position = collider[i]->position;
+	}
     }
 }
 

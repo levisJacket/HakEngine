@@ -19,11 +19,13 @@ bool PhysicsManager::addPhysics(unsigned int entityID, float mass){
 
 void PhysicsManager::update(float timeStep){
     for(int i = 0; i < physicsCount; i++){
-	physics[i].position = entityManager->getEntity(physics[i].ownerID)->getPosition();
+	Entity *entity = entityManager->getEntity(physics[i].ownerID); 
+
+	physics[i].position = entity->getPosition();
 
 	physics[i].update(timeStep);
 
-	entityManager->getEntity(physics[i].ownerID)->setPosition(physics[i].position);
+	entity->setPosition(physics[i].position);
     }
 }
 

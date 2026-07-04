@@ -73,6 +73,7 @@ void Engine::run(){
 	physicsManager.update(timeStep);
 	collisionManager.resolve(timeStep);
 
+
 	renderer.render();
 
         glfwSwapBuffers(window);
