@@ -40,7 +40,7 @@ public:
     unsigned int createEntity(std::string name);
     Entity* getEntity(unsigned int entityID);
     void addPhysics(unsigned int entityID, float mass);
-    void addCollider(unsigned int entityID);
+    void addCollider(unsigned int entityID, ColliderInfo data);
 
     void addImpulse(unsigned int entityID, glm::vec3 force);
 };

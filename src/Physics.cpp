@@ -1,6 +1,10 @@
 #include "Physics.hpp"
 
-Physics::Physics(){}
+Physics::Physics(){
+    inverseMass = 0.0f;
+    velocity = glm::vec3(0.0f, 0.0f, 0.0f);
+    acceleration = glm::vec3(0.0f, 0.0f, 0.0f);
+}
 
 Physics::Physics(unsigned int ownerID, glm::vec3 position, float mass){
     this->ownerID = ownerID;
@@ -34,10 +38,4 @@ void Physics::update(float duration){
     velocity = velocity * glm::pow(damping, duration);
 
     position += velocity * duration;
-    if(position.y < 0)	{
-	position.y = 0.0f;
-	if (velocity.y < 0.0f) {
-	    velocity.y = velocity.y * -0.8;
-	}
-    }
 }

@@ -16,7 +16,7 @@ private:
 public:
     CollisionManager();
     CollisionManager(EntityManager* entityManager, PhysicsManager* physicsManager);
-    bool addCollider(unsigned int entityID);
+    bool addCollider(unsigned int entityID, ColliderInfo data);
 
     void resolve(float duration);
 };

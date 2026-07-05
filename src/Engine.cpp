@@ -55,7 +55,6 @@ void Engine::run(){
     glm::vec3 camPosition = glm::vec3(0.0f, 3.0f, 0.0f);
     camera.setPosition(&camPosition);
     camera.setRotation(&camRotation);
-    //shader.setInt("u_Texture", 0);
 
     for(int i = 0; i < lights.size(); i++ ){
 	shader.setVec3("u_Lights["+std::to_string(i)+"].position", lights[i].position);
@@ -72,7 +71,7 @@ void Engine::run(){
 
 	physicsManager.update(timeStep);
 	collisionManager.resolve(timeStep);
-
+	physicsManager.applyPhysics();
 
 	renderer.render();
 
@@ -112,8 +111,8 @@ void Engine::addPhysics(unsigned int entityID, float mass){
     physicsManager.addPhysics(entityID, mass);
 }
 
-void Engine::addCollider(unsigned int entityID){
-    collisionManager.addCollider(entityID);
+void Engine::addCollider(unsigned int entityID, ColliderInfo data){
+    collisionManager.addCollider(entityID, data);
 }
 
 void Engine::addImpulse(unsigned int entityID, glm::vec3 force){

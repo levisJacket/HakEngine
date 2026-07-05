@@ -3,6 +3,18 @@
 #include "Physics.hpp"
 #include <glm/glm.hpp>
 
+enum class ColliderType{
+    Sphere,
+    Plane
+};
+
+struct ColliderInfo{
+    ColliderType type;
+    float radius;
+    glm::vec3 normal;
+    float distance;
+};
+
 class Collider {
 public:
     Physics *physics = nullptr;
@@ -34,15 +46,5 @@ public:
     ColliderPlane(Physics* physics, glm::vec3 norm, float dist)
 	: Collider{physics}, normal(norm), distance(dist){}
 };
-
-/*
-class ColliderCube : public Collider {
-public:
-    glm::vec3 halfExtents;
-
-    ColliderCube();
-    ColliderCube(Physics *physics, glm::vec3 halfExtents);
-};
-*/
 
 bool isColliding(Collider *first, Collider *second);

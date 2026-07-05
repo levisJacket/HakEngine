@@ -19,6 +19,7 @@ public:
     Physics* getPhysics(unsigned int entityID);
      
     void update(float timeStep);
+    void applyPhysics();
 
     void addImpulse(unsigned int entityID, glm::vec3 force);
 };

@@ -10,16 +10,21 @@ CollisionManager::CollisionManager(EntityManager* entityManager, PhysicsManager*
     this->physicsManager = physicsManager;
 }
 
-bool CollisionManager::addCollider(unsigned int entityID){
+bool CollisionManager::addCollider(unsigned int entityID, ColliderInfo data){
     if (collider.size() == MAX_COLLIDER)	{
 	std::cout << "failed to create; max collider reached" << std::endl;
 	return false;
     }
 
     Physics *physics = physicsManager->getPhysics(entityID);
-    collider.push_back(std::make_unique<ColliderSphere>(physics, 1.0f));
-
-    return true;
+    if (data.type == ColliderType::Sphere){
+	collider.push_back(std::make_unique<ColliderSphere>(physics, data.radius));
+	return true;
+    } else if (data.type == ColliderType::Plane){
+	collider.push_back(std::make_unique<ColliderPlane>(physics, data.normal, data.distance));
+	return true;
+    }
+    return false;
 }
 
 void CollisionManager::resolve(float duration){
@@ -60,18 +65,40 @@ void CollisionManager::resolve(float duration){
 	if (minIndex == contacts.size()) { break; }
 
 	Contact c = contacts[minIndex];
-	if (c.penetration <= 0.0f) { continue; }
+	if (c.penetration <= 0.0f) { break; }
 
-	Physics *physicsA = c.colliderA->physics;
-	Physics *physicsB = c.colliderB->physics;
+	Physics dummy = Physics();
+	Physics *physicsA = c.colliderA->physics ? c.colliderA->physics : &dummy;
+	Physics *physicsB = c.colliderB->physics ? c.colliderB->physics : &dummy; 
 
-	float sumMass = physicsA->inverseMass + physicsB->inverseMass;
+	float massA = physicsA->inverseMass;
+	float massB = physicsB->inverseMass;
+
+	float sumMass = massA + massB;
 	if (sumMass <= 0.0f) { continue; }
 	
 	glm::vec3 resolveUnit = c.contactNormal * c.penetration / sumMass;
 
-	physicsA->position += resolveUnit * physicsA->inverseMass;
-	physicsB->position += resolveUnit * physicsB->inverseMass * -1.0f;
+	glm::vec3 moveA = resolveUnit * massA;
+	glm::vec3 moveB = resolveUnit * massB * -1.0f;
+
+	c.colliderA->position += moveA;
+	c.colliderB->position += moveB;
+	for (int i = 0; i < contacts.size(); i++){
+	    if (i == minIndex) { continue; }
+
+	    if (contacts[i].colliderA == c.colliderA) {
+		contacts[i].penetration -= glm::dot(moveA, contacts[i].contactNormal);
+	    } else if (contacts[i].colliderA == c.colliderB) {
+		contacts[i].penetration -= glm::dot(moveB, contacts[i].contactNormal);
+	    }
+
+	    if (contacts[i].colliderB == c.colliderA) {
+		contacts[i].penetration += glm::dot(moveA, contacts[i].contactNormal);
+	    } else if (contacts[i].colliderB == c.colliderB) {
+		contacts[i].penetration += glm::dot(moveB, contacts[i].contactNormal);
+	    }
+	}
 
 	float accCausedSepVelocity = glm::dot((physicsB->acceleration - physicsA->acceleration), c.contactNormal) * duration;
 
@@ -94,6 +121,7 @@ void CollisionManager::resolve(float duration){
 	iterationsUsed++;
     }
 
+    
     for (int i = 0; i < collider.size(); i++){
 	if (collider[i]->physics) {
 	    collider[i]->physics->position = collider[i]->position;

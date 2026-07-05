@@ -29,6 +29,14 @@ void PhysicsManager::update(float timeStep){
     }
 }
 
+void PhysicsManager::applyPhysics(){
+    for(int i = 0; i < physicsCount; i++){
+	Entity *entity = entityManager->getEntity(physics[i].ownerID);
+
+	entity->setPosition(physics[i].position);
+    }
+}
+
 Physics* PhysicsManager::getPhysics(unsigned int entityID){
     for(int i = 0; i < physicsCount; i++){
 	if (physics[i].ownerID == entityID){
