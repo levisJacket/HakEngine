@@ -28,7 +28,7 @@ private:
     GLFWwindow* window;
     Camera camera;
 public:
-    Engine();     
+    Engine();
     ~Engine();
 
     bool init();
