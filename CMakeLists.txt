@@ -1,6 +1,20 @@
 cmake_minimum_required(VERSION 3.10)
 project(HakEngine)
 
+include(FetchContent)
+FetchContent_Declare(
+    JoltPhysics
+    GIT_REPOSITORY https://github.com/jrouwe/JoltPhysics.git
+    GIT_TAG        v5.2.0          # Or latest stable tag
+    GIT_SHALLOW    TRUE
+    SOURCE_SUBDIR  Build           # <--- CRITICAL: Jolt's CMakeLists.txt is inside Build/ folder
+)
+
+FetchContent_MakeAvailable(JoltPhysics)
+
+# get_target_property(LOC JoltPhysics LOCATION)
+# message(STATUS "JoltPhysics target location: ${LOC}")
+
 find_package(glfw3 3.3 REQUIRED)
 find_package(OpenGL REQUIRED)
 #find_package(GLAD REQUIRED)
@@ -38,4 +52,5 @@ target_link_libraries(HakEngine
     PRIVATE
         glfw 
         OpenGL::GL
+	Jolt
 )
