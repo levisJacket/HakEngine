@@ -3,7 +3,6 @@
 #include "AssetLoader.hpp"
 #include "EntityManager.hpp"
 #include "PhysicsManager.hpp"
-#include "CollisionManager.hpp"
 #include "Renderer.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
@@ -13,12 +12,13 @@
 #include <iostream>
 #include <vector>
 #include <chrono>
+#include <unordered_map>
+#include <string>
 
 class Engine {
 private:
     EntityManager entityManager;
     PhysicsManager physicsManager;
-    CollisionManager collisionManager;
     Renderer renderer;
 
     AssetLoader assetLoader;
@@ -27,8 +27,14 @@ private:
     std::vector<Light> lights;
     GLFWwindow* window;
     Camera camera;
+
+    // Tracking entity metadata for dynamic Jolt Physics body creation
+    std::unordered_map<unsigned int, float> entityMasses;
+
 public:
-    Engine();
+    Engine() : 
+	entityManager(EntityManager()),
+	physicsManager(PhysicsManager(&entityManager)) {};
     ~Engine();
 
     bool init();
@@ -39,8 +45,7 @@ public:
 
     unsigned int createEntity(std::string name);
     Entity* getEntity(unsigned int entityID);
-    void addPhysics(unsigned int entityID, float mass);
-    void addCollider(unsigned int entityID, ColliderInfo data);
+    void addBody(unsigned int entityID, BodyInfo info);
 
     void addImpulse(unsigned int entityID, glm::vec3 force);
 };

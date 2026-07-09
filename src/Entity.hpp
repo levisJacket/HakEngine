@@ -25,4 +25,8 @@ class Entity{
 	glm::vec3 getPosition();
 
 	void setScale(float scale);
+	float getScale();
+
+	void setRotation(glm::quat rotation);
+	glm::quat getRotation();
 };

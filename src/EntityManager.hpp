@@ -4,6 +4,12 @@
 
 #define MAXENTITY 8
 
+struct physicsSet {
+    unsigned int entityID;
+    glm::vec3 position;
+    glm::quat rotation;
+};
+
 class EntityManager{
 private:
     Entity entityList[MAXENTITY];

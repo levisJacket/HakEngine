@@ -37,3 +37,15 @@ glm::vec3 Entity::getPosition(){
 void Entity::setScale(float scale){
     transform.scale = scale;
 }
+
+float Entity::getScale(){
+    return transform.scale;
+}
+
+void Entity::setRotation(glm::quat rotation){
+    transform.rotation = rotation;
+}
+
+glm::quat Entity::getRotation(){
+    return transform.rotation;
+}

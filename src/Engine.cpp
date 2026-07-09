@@ -34,10 +34,8 @@ bool Engine::init(){
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CW);
-    
-    entityManager = EntityManager();
-    physicsManager = PhysicsManager(&entityManager);
-    collisionManager = CollisionManager(&entityManager, &physicsManager);
+
+    physicsManager.init(); // Initialize Jolt Physics System!
 
     assetLoader = AssetLoader(PATH);
     shader = assetLoader.loadShader();
@@ -70,8 +68,6 @@ void Engine::run(){
 	shader.setMat4("u_ViewProjectionMatrix", camera.viewMatrix() * camera.projectionMatrix());
 
 	physicsManager.update(timeStep);
-	collisionManager.resolve(timeStep);
-	physicsManager.applyPhysics();
 
 	renderer.render();
 
@@ -92,35 +88,30 @@ void Engine::addLight(glm::vec3 position, glm::vec3 color){
 unsigned int Engine::createEntity(std::string name){
     Mesh *mesh;
     int len = name.length();
+    unsigned int entityID = 0;
 
     if (name.substr(len - 4) == ".stl"){
 	Mesh *mesh = assetLoader.loadMesh(name);
-	return entityManager.createEntity(mesh);
+	entityID = entityManager.createEntity(mesh);
     } else if (name.substr(len - 4) == ".obj"){
 	Mesh *mesh = assetLoader.loadMesh(name, name.substr(0, len - 4) + ".png");
-	return entityManager.createEntity(mesh);
+	entityID = entityManager.createEntity(mesh);
     } 
-    return 0;
+
+    return entityID;
 }
 
 Entity* Engine::getEntity(unsigned int entityID){
     return entityManager.getEntity(entityID);
 }
 
-void Engine::addPhysics(unsigned int entityID, float mass){
-    physicsManager.addPhysics(entityID, mass);
-}
-
-void Engine::addCollider(unsigned int entityID, ColliderInfo data){
-    collisionManager.addCollider(entityID, data);
+void Engine::addBody(unsigned int entityID, BodyInfo info){
+    physicsManager.addBody(entityID, info);
 }
 
 void Engine::addImpulse(unsigned int entityID, glm::vec3 force){
     physicsManager.addImpulse(entityID, force);
 }
-
-
-Engine::Engine(){}
 
 Engine::~Engine(){
     terminate();

@@ -1,5 +1,23 @@
+add_compile_options(-msse4.1 -mno-avx -mno-avx2 -mno-fma)
+add_compile_options(-fno-omit-frame-pointer)
+
 cmake_minimum_required(VERSION 3.10)
 project(HakEngine)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -msse4.1 -mno-avx -mno-avx2 -mno-fma")
+set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fno-omit-frame-pointer -msse4.1 -mno-avx -mno-avx2 -mno-fma")
+set(CMAKE_CXX_FLAGS_INIT "${CMAKE_CXX_FLAGS}" CACHE STRING "" FORCE)
+set(CMAKE_C_FLAGS_INIT   "${CMAKE_C_FLAGS}"   CACHE STRING "" FORCE)
+set(JPH_ENABLE_AVX2 OFF CACHE BOOL "" FORCE)
+set(JPH_ENABLE_AVX  OFF CACHE BOOL "" FORCE)
+set(JPH_ENABLE_FMA  OFF CACHE BOOL "" FORCE)
+
+# Force Jolt Physics options to match our Celeron N4020 CPU (No AVX/AVX2/F16C/FMA!)
+set(USE_AVX OFF CACHE BOOL "Disable AVX" FORCE)
+set(USE_AVX2 OFF CACHE BOOL "Disable AVX2" FORCE)
+set(USE_AVX512 OFF CACHE BOOL "Disable AVX512" FORCE)
+set(USE_F16C OFF CACHE BOOL "Disable F16C" FORCE)
+set(USE_FMADD OFF CACHE BOOL "Disable FMADD" FORCE)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -12,8 +30,6 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(JoltPhysics)
 
-# get_target_property(LOC JoltPhysics LOCATION)
-# message(STATUS "JoltPhysics target location: ${LOC}")
 
 find_package(glfw3 3.3 REQUIRED)
 find_package(OpenGL REQUIRED)
@@ -34,10 +50,6 @@ set(PROJECT_SOURCES
     src/Transform.cpp 	src/Transform.hpp
 
     src/PhysicsManager.cpp  	src/PhysicsManager.hpp
-    src/Physics.cpp	src/Physics.hpp
-    src/CollisionManager.cpp 	src/CollisionManager.hpp
-    src/Collider.cpp 	src/Collider.hpp
-    src/Contact.hpp	src/Contact.cpp
 
     src/Renderer.cpp 	src/Renderer.hpp
     src/Shader.cpp 	src/Shader.hpp
