@@ -32,12 +32,12 @@ glm::mat4 Transform::ModelMatrix(){
 	0.0, 0.0, scale, 0.0,
 	0.0, 0.0, 0.0, 1.0
     };
-    glm::mat4 matRotation = glm::mat4_cast(glm::conjugate(rotation));
+    glm::mat4 matRotation = glm::mat4_cast(rotation);
     glm::mat4 matPosition = {
-	1.0, 0.0, 0.0, position.x,
-	0.0, 1.0, 0.0, position.y,
-	0.0, 0.0, 1.0, position.z,
-	0.0, 0.0, 0.0, 1.0
+	1.0, 0.0, 0.0, 0.0,
+	0.0, 1.0, 0.0, 0.0,
+	0.0, 0.0, 1.0, 0.0,
+	position.x, position.y, position.z, 1.0
     };
-    return matScale * matRotation * matPosition;
+    return matPosition * matRotation * matScale;
 }

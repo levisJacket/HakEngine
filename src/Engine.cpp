@@ -65,7 +65,7 @@ void Engine::run(){
 	timeStep = glfwGetTime() - timeValue;
 	timeValue = glfwGetTime();
 	
-	shader.setMat4("u_ViewProjectionMatrix", camera.viewMatrix() * camera.projectionMatrix());
+	shader.setMat4("u_ViewProjectionMatrix", camera.viewProjectionMatrix());
 
 	physicsManager.update(timeStep);
 

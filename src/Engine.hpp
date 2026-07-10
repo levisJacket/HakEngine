@@ -28,9 +28,6 @@ private:
     GLFWwindow* window;
     Camera camera;
 
-    // Tracking entity metadata for dynamic Jolt Physics body creation
-    std::unordered_map<unsigned int, float> entityMasses;
-
 public:
     Engine() : 
 	entityManager(EntityManager()),

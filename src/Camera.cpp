@@ -10,27 +10,23 @@ Camera::Camera(float screenRatio){
     projMatrix = glm::mat4(
 	glm::vec4(screenRatio * fov, 0.0f, 0.0f, 0.0f),
 	glm::vec4(0.0f, fov, 0.0f, 0.0f),
-	glm::vec4(0.0f, 0.0f, far/(far-near), -near*far/(far-near)),
-	glm::vec4(0.0f, 0.0f, 1.0f, 0.0f)
+	glm::vec4(0.0f, 0.0f, far/(far-near), 1.0f),
+	glm::vec4(0.0f, 0.0f, -near*far/(far-near), 0.0f)
     );
 }
 
-glm::mat4 Camera::viewMatrix(){
+glm::mat4 Camera::viewProjectionMatrix(){
     glm::vec3 invPosition = - *position;
     glm::quat invRotation = glm::inverse(*rotation);
 
     glm::mat4 matPosition = {
-	1.0, 0.0, 0.0, invPosition.x,
-	0.0, 1.0, 0.0, invPosition.y,
-	0.0, 0.0, 1.0, invPosition.z,
-	0.0, 0.0, 0.0, 1.0
+	1.0, 0.0, 0.0, 0.0,
+	0.0, 1.0, 0.0, 0.0,
+	0.0, 0.0, 1.0, 0.0,
+	invPosition.x, invPosition.y, invPosition.z, 1.0
     };
     glm::mat4 matRotation = glm::mat4_cast(invRotation);
-    return matPosition * matRotation;
-}
-
-glm::mat4 Camera::projectionMatrix(){
-    return projMatrix;
+    return projMatrix * matRotation * matPosition;
 }
 
 void Camera::setPosition(glm::vec3 *position){

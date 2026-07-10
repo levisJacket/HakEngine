@@ -12,12 +12,12 @@ uniform mat4 u_ViewProjectionMatrix;
 
 void main()
 {
-    vec4 worldPos = vec4(aPosition, 1.0) * u_ModelMatrix; 
+    vec4 worldPos = u_ModelMatrix * vec4(aPosition, 1.0); 
     worldPosition = worldPos;
     uvFrag = aUvFrag;
 
-    vec4 worldNorm = vec4(aNormal, 0.0) * u_ModelMatrix;
+    vec4 worldNorm = u_ModelMatrix * vec4(aNormal, 0.0);
     worldNormal = worldNorm;
 
-    gl_Position = worldPos * u_ViewProjectionMatrix;
+    gl_Position = u_ViewProjectionMatrix * worldPos;
 }

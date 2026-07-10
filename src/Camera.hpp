@@ -16,6 +16,5 @@ class Camera{
 	Camera(float screenRatio);
 	void setPosition(glm::vec3 *position);
 	void setRotation(glm::quat *rotation);
-	glm::mat4 viewMatrix();
-	glm::mat4 projectionMatrix();
+	glm::mat4 viewProjectionMatrix();
 };
