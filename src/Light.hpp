@@ -2,9 +2,10 @@
 
 #include <glm/glm.hpp>
 
-class Light{
+struct Light{
 public:
     glm::vec3 position;
     glm::vec3 color;
-    Light(glm::vec3 position, glm::vec3 color);
+    float radius;
+    float intensity;
 };

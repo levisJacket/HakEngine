@@ -38,7 +38,7 @@ public:
     void run();
     void terminate();
 
-    void addLight(glm::vec3 position, glm::vec3 color);
+    void addLight(Light light);
 
     unsigned int createEntity(std::string name);
     Entity* getEntity(unsigned int entityID);

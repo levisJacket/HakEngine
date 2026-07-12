@@ -48,7 +48,13 @@ int main(void)
     engine.addImpulse(sphere1, vec3(3, 10, 0));
     engine.addImpulse(sphere2, vec3(-1, 0, 0));
 
-    engine.addLight(vec3(0, 3, 0), vec3(1, 1, 1));
+    engine.addLight(Light{
+		.position = vec3(0, 3, 0),
+		.color = vec3(1, 1, 1),
+		.radius = 2000.0f,
+		.intensity = 10.0f
+	    }
+    );
 
     engine.run();
 

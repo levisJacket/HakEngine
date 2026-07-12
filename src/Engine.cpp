@@ -57,6 +57,8 @@ void Engine::run(){
     for(int i = 0; i < lights.size(); i++ ){
 	shader.setVec3("u_Lights["+std::to_string(i)+"].position", lights[i].position);
 	shader.setVec3("u_Lights["+std::to_string(i)+"].color", lights[i].color);
+	shader.setFloat("u_Lights["+std::to_string(i)+"].radius", lights[i].radius);
+	shader.setFloat("u_Lights["+std::to_string(i)+"].intensity", lights[i].intensity);
     }
 
     float timeValue = 0.0f, timeStep = 0.0f;
@@ -81,8 +83,8 @@ void Engine::terminate(){
     glfwTerminate();
 }
 
-void Engine::addLight(glm::vec3 position, glm::vec3 color){
-    lights.push_back(Light(position, color));
+void Engine::addLight(Light light){
+    lights.push_back(light);
 }
 
 unsigned int Engine::createEntity(std::string name){
