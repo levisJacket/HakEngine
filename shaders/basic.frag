@@ -36,7 +36,7 @@ void main()
 	vec3 diff = u_Lights[i].position - vec3(worldPosition);
 	float distance = length(diff);
 	vec3 faceToLight = normalize(diff);
-	float diffusion = dot(faceNormal, faceToLight);
+	float diffusion = max(dot(faceNormal, faceToLight), 0.0);
 
 	float numerator = clamp(1.0 - pow(distance / u_Lights[i].radius, 4.0), 0.0, 1.0);
 	float attenuation = (numerator * numerator) / (distance * distance + 0.0001);
