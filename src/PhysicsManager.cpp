@@ -213,17 +213,18 @@ bool PhysicsManager::addBody(unsigned int entityID, BodyInfo info) {
 
 void PhysicsManager::update(float timeStep) {
     if (!m_bodyInterface) return;
+    const float FIXED_TIMESTEP = 1.0f / 30.0f;
 
-    // Standard timestep clamping to maintain high solver accuracy
-    float step = std::min(timeStep, 0.1f);
-
-    // Tick the simulation
-    m_physicsSystem.Update(
-        step,
-        1,
-        m_tempAllocator,
-        m_jobSystem
-    );
+    timeAccum += timeStep;
+    while (timeAccum >= FIXED_TIMESTEP){
+	m_physicsSystem.Update(
+	    FIXED_TIMESTEP,
+	    1,
+	    m_tempAllocator,
+	    m_jobSystem
+	);
+	timeAccum -= FIXED_TIMESTEP;
+    }
 
     // Keep shapes in sync
     syncTransforms();

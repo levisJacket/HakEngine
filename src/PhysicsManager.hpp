@@ -27,6 +27,7 @@ struct BodyInfo {
 
 class PhysicsManager {
 private:
+    float timeAccum = 0.0f;
     EntityManager* entityManager;
     
     // Jolt instances
