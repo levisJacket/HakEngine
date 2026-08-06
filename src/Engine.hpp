@@ -10,8 +10,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <functional>
 #include <vector>
-#include <chrono>
 #include <unordered_map>
 #include <string>
 
@@ -19,14 +19,16 @@ class Engine {
 private:
     EntityManager entityManager;
     PhysicsManager physicsManager;
-    Renderer renderer;
-
     AssetLoader assetLoader;
+
+    Renderer renderer;
     Shader shader;
-    
     std::vector<Light> lights;
-    GLFWwindow* window;
     Camera camera;
+
+    GLFWwindow* window;
+
+    float timeValue = 0.0f; float timeStep = 0.0f;
 
 public:
     Engine() : 
@@ -38,11 +40,15 @@ public:
     void run();
     void terminate();
 
+    void rigCamera(glm::vec3 *position, glm::quat *rotation);
+    void rigCamera(unsigned int entityID);
     void addLight(Light light);
 
     unsigned int createEntity(std::string name);
     Entity* getEntity(unsigned int entityID);
-    void addBody(unsigned int entityID, BodyInfo info);
+    std::function<void(int key, int action)> keyCallBack;
+    std::function<void(int button, int action)> mouseButtonCallBack;
 
+    void addBody(unsigned int entityID, BodyInfo info);
     void addImpulse(unsigned int entityID, glm::vec3 force);
 };

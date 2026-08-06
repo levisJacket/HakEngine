@@ -25,6 +25,10 @@ unsigned int Entity::meshTexture(){
 int Entity::indexCount(){
     return mesh->getIndexCount();
 }
+	
+Transform* Entity::getTransform(){
+    return &transform;
+}
 
 void Entity::setPosition(glm::vec3 position){
     transform.position = position;

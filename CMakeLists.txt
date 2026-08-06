@@ -53,7 +53,7 @@ set(PROJECT_SOURCES
 
     src/Renderer.cpp 	src/Renderer.hpp
     src/Shader.cpp 	src/Shader.hpp
-    src/Light.cpp 	src/Light.hpp
+    src/Light.hpp
 
     src/Camera.cpp 	src/Camera.hpp
 )
